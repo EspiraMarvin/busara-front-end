@@ -20,12 +20,13 @@ module.exports = function (/* ctx */) {
     // --> boot files are part of "main.js"
     // https://v1.quasar.dev/quasar-cli/boot-files
     boot: [
-
+      'axios'
     ],
 
     // https://v1.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
     css: [
-      'app.scss'
+      'app.scss',
+      'nprogress.css',
     ],
 
     // https://github.com/quasarframework/quasar/tree/dev/extras
@@ -44,6 +45,9 @@ module.exports = function (/* ctx */) {
 
     // Full list of options: https://v1.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
     build: {
+      // env: {
+      //   API_BASE_URL: 'http://fullstack-role.busara.io/api/v1',
+      // },
       vueRouterMode: 'history', // available values: 'hash', 'history'
 
       // transpile: false,
