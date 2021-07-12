@@ -1,6 +1,6 @@
 # Quasar App (busara front-end)
 
-A Quasar Framework app
+Implemented with Vue js Quasar
 
 ## Install the dependencies
 ```bash
