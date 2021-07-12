@@ -1,4 +1,4 @@
-# Quasar App (busara)
+# Quasar App (busara front-end)
 
 A Quasar Framework app
 
