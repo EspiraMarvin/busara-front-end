@@ -6,6 +6,10 @@
   "author": "EspiraMarvin <espiramarvin@gmail.com>",
   "private": true,
   "scripts": {
+    "dev": "quasar dev",
+    "build": "quasar build",
+    "add-pwa": "quasar mode add pwa",
+    "build-pwa": "quasar build -m pwa",
     "lint": "eslint --ext .js,.vue ./",
     "test": "echo \"No test specified\" && exit 0"
   },
