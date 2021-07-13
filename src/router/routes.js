@@ -3,7 +3,6 @@ import store from "../store"
 
 const ifNotAuthenticated = (_to, _from, next) => {
   if (!store().getters['user/isAuthenticated']) {
-    console.log('is not authenticated', store().getters['user/isAuthenticated'])
     next();
     return;
   }
@@ -12,7 +11,6 @@ const ifNotAuthenticated = (_to, _from, next) => {
 
 const ifAuthenticated = (_to, _from, next) => {
   if (store().getters['user/isAuthenticated']) {
-    console.log('is  authenticated')
     next();
     return;
   }
@@ -23,7 +21,7 @@ const routes = [
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
-    // beforeEnter: ifAuthenticated,
+    beforeEnter: ifAuthenticated,
     children: [
       {
         path: '/home',
@@ -34,7 +32,7 @@ const routes = [
   {
     path: '/',
     component: () => import('layouts/GuestLayout.vue'),
-    // beforeEnter: ifNotAuthenticated,
+    beforeEnter: ifNotAuthenticated,
     children: [
       {
         path: '/login',

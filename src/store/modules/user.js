@@ -1,38 +1,49 @@
-import http from '../../helpers/serviceConfigs'
+import { http, baseURL, setAccessToken, setRefreshToken, storeUserDataToLocalStorage, getUserDataFromLocalStorage } from 'boot/axios'
+import { appendForm} from "src/helpers/serviceConfigs";
+
+
 const TOKEN ='real-token'
 const USER = 'real-user'
 
 const state = () => ({
-  token: localStorage.getItem(TOKEN) || '',
-  // token: 'yJhaT0879gVLcHpDtByIZEei005BbQ',
-  currentUser: JSON.parse(localStorage.getItem(USER)) || []
+  token: localStorage.getItem('AccessToken') || '',
+  refreshToken: localStorage.getItem('AccessToken') || '',
+  currentUser: JSON.parse(localStorage.getItem('UserData')) || [],
 })
 
 const getters = ({
   isAuthenticated: state => !!state.token,
   currentUser: state => state.currentUser,
-  token: state => state.token
-})
+  token: state => state.token,
+  refreshToken: state => state.refreshToken
+});
 
 const mutations = {
-  updateUser(state) {
-    state.token = localStorage.getItem(TOKEN) || ''
-    state.currentUser = JSON.parse(localStorage.getItem(USER)) || []
+  updateCredentials (state) {
+    state.token = localStorage.getItem('AccessToken') || ''
+    state.refreshToken = localStorage.getItem('RefreshToken')
+  },
+  updateUserDetails (state) {
+    state.currentUser = JSON.parse(localStorage.getItem('UserData')) || [];
   }
 }
 
 const actions = {
   loginUser(context, payload) {
-    console.log('user payload', payload)
-    // localStorage.setItem(TOKEN, payload)
-    // localStorage.setItem(USER, JSON.stringify(payload.user))
-    // context.commit('updateUser')
+    setAccessToken(payload.access_token)
+    setRefreshToken(payload.refresh_token)
+    context.commit('updateCredentials', payload)
   },
   logOut(context) {
-    localStorage.removeItem(TOKEN);
-    localStorage.removeItem(USER);
-    context.commit('updateUser');
+    localStorage.removeItem('AccessToken');
+    localStorage.removeItem('RefreshToken');
+    context.commit('updateUserDetails');
   },
+  getUser(context, payload) {
+    console.log('user payload', payload)
+      storeUserDataToLocalStorage(payload)
+      context.commit('updateUserDetails', payload)
+    }
 }
 
 export default  {

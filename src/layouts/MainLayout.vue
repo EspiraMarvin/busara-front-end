@@ -39,9 +39,16 @@ export default {
 
     }
   },
+  computed: {
+    user() {
+      return this.$store.getters['user/getCurrentUser'];
+    }
+  },
   methods: {
     logout() {
-      console.log('logout users from mainlayout')
+      this.$store.dispatch('user/logOut').then(() => {
+        this.$router.push({ name: 'Login' });
+      });
     }
   }
 }

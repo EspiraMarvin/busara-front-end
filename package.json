@@ -16,7 +16,10 @@
   "dependencies": {
     "@quasar/extras": "^1.0.0",
     "axios": "^0.21.1",
+    "axios-oauth-client": "^1.4.3",
+    "axios-token-interceptor": "^0.2.0",
     "core-js": "^3.6.5",
+    "qs": "^6.10.1",
     "quasar": "^1.0.0"
   },
   "devDependencies": {
@@ -25,7 +28,8 @@
     "eslint": "^7.21.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-vue": "^7.7.0",
-    "eslint-webpack-plugin": "^2.4.0"
+    "eslint-webpack-plugin": "^2.4.0",
+    "request": "^2.88.2"
   },
   "browserslist": [
     "last 10 Chrome versions",
