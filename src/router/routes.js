@@ -14,7 +14,7 @@ const ifAuthenticated = (_to, _from, next) => {
     next();
     return;
   }
-  next('/login');
+  next('/');
 };
 
 const routes = [
@@ -35,7 +35,7 @@ const routes = [
     beforeEnter: ifNotAuthenticated,
     children: [
       {
-        path: '/login',
+        path: '/',
         name: 'Login',
         component: () => import('pages/auth/Auth.vue') }
     ]

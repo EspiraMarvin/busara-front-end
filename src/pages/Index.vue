@@ -1,21 +1,19 @@
 <template>
   <q-page class="q-px-lg q-py-xl">
-    <q-btn label="Here" color="primary" @click="clickToGetUser" />
-    Welcome to surveyor. Help us carry out the survey below.
+    Welcome {{ currentUser.name | capitalize }} to surveyor. Help us carry out the survey below.
+    <br>
     Click &nbsp;
     <q-btn label="Here" color="primary" @click="openSurvey" />
     &nbsp; to open and start the survey
       <q-card class="q-mt-md" v-if="disable">
-        <Surveyor />
+        <Surveyor :questions="questions" />
       </q-card>
-<!--    <q-btn  @click="getCurrentUser" />-->
   </q-page>
 </template>
 
 <script>
 import Surveyor from "components/Surveyor";
 import {http} from "boot/axios";
-// import { mapState, mapGetters } from 'vuex'
 export default {
   name: 'PageIndex',
   components: { Surveyor },
@@ -26,15 +24,18 @@ export default {
     }
   },
   computed: {
-    user () {
-      return this.$store.state['user/currentUser']
+    // ...mapGetters('user', ['currentUser']),
+    currentUser() {
+      return this.$store.getters['user/currentUser'];
     },
-    // user() {
-    //   return this.$store.getters['user/getCurrentUser'];
-    // }
+    questions() {
+      return this.$store.getters['question/questions']
+    }
   },
   mounted() {
     this.getCurrentUser()
+    this.getSurveyForm()
+    this.getSurveyQuestions()
   },
   methods: {
     getCurrentUser() {
@@ -43,11 +44,25 @@ export default {
         this.$store.dispatch('user/getUser', response.data)
       }).catch(error => error)
     },
-    clickToGetUser () {
-      this.user = this.userDetailss
+    getSurveyQuestions () {
+      http.get('http://fullstack-role.busara.io/api/v1/questions')
+      .then((response) => {
+        this.$store.dispatch('question/getQuestions', response.data)
+      }).catch(err => err)
+    },
+    getSurveyForm () {
+      http.get('http://fullstack-role.busara.io/api/v1/recruitment/forms/?node_type=Both')
+      .then((response) => {
+        this.$store.dispatch('question/getForm', response.data)
+      }).catch(err => err)
     },
     openSurvey() {
       this.disable = !this.disable
+    }
+  },
+  filters: {
+    capitalize (val) {
+      return val.toUpperCase()
     }
   }
 }

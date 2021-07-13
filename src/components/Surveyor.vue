@@ -1,74 +1,58 @@
 <template>
-<div>
-  <q-card class="q-pa-sm">
-    <q-form @submit="submitSurvey">
-      <q-input
-        v-model="formData.fName"
-        outlined
-        class="q-mb-md"
-        type="email"
-        label="Email" />
-    <q-tree
-      :nodes="simple"
-      node-key="label"
-    />
-    </q-form>
-  </q-card>
-    <q-btn
-      class="float-right q-mt-md"
-      color="primary"
-      label="Next Page" />
-</div>
+  <div class="bg-red-3">
+    <q-card dark>
+      <FormWizard @on-complete="onComplete"
+                 shape="tab"
+                 color="#9b59b6">
+      <TabContent title="Personal details"
+                   icon="ti-user" :before-change="beforeTabSwitch">
+        My first tab content
+      </TabContent>
+      <TabContent title="Additional Info"
+                   icon="ti-settings">
+        My second tab content
+      </TabContent>
+      <TabContent title="Last step"
+                   icon="ti-check">
+        Yuhuuu! This seems pretty damn simple
+       </TabContent>
+     </FormWizard>
+    </q-card>
+  </div>
 </template>
 
 <script>
+import {FormWizard, TabContent} from 'vue-form-wizard'
+import 'vue-form-wizard/dist/vue-form-wizard.min.css'
 export default {
 name: "Surveyor",
+  components: {
+    FormWizard,
+    TabContent
+  },
+  props: {
+    'questions': {
+      type: Object,
+      required: false
+    }
+  },
   data () {
   return {
+    step: 1,
     formData: {
+      username: '',
       fName: ''
-    },
-    simple: [
-      {
-        label: 'Satisfied customers (with avatar)',
-        avatar: 'https://cdn.quasar.dev/img/boy-avatar.png',
-        children: [
-          {
-            label: 'Good food (with icon)',
-            icon: 'restaurant_menu',
-            children: [
-              { label: 'Quality ingredients' },
-              { label: 'Good recipe' }
-            ]
-          },
-          {
-            label: 'Good service (disabled node with icon)',
-            icon: 'room_service',
-            disabled: true,
-            children: [
-              { label: 'Prompt attention' },
-              { label: 'Professional waiter' }
-            ]
-          },
-          {
-            label: 'Pleasant surroundings (with icon)',
-            icon: 'photo',
-            children: [
-              {
-                label: 'Happy atmosphere (with image)',
-                img: 'https://cdn.quasar.dev/img/logo_calendar_128px.png'
-              },
-              { label: 'Good table presentation' },
-              { label: 'Pleasing decor' }
-            ]
-          }
-        ]
-      }
-    ]
+    }
    }
   },
   methods: {
+    onComplete: function(){
+      alert('Yay. Done!');
+    },
+    beforeTabSwitch: function(){
+      alert("This is called before switchind tabs")
+      return true;
+    },
     submitSurvey() {
       console.log()
     }

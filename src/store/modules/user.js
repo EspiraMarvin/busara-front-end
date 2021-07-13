@@ -1,9 +1,4 @@
 import { http, baseURL, setAccessToken, setRefreshToken, storeUserDataToLocalStorage, getUserDataFromLocalStorage } from 'boot/axios'
-import { appendForm} from "src/helpers/serviceConfigs";
-
-
-const TOKEN ='real-token'
-const USER = 'real-user'
 
 const state = () => ({
   token: localStorage.getItem('AccessToken') || '',
@@ -24,6 +19,7 @@ const mutations = {
     state.refreshToken = localStorage.getItem('RefreshToken')
   },
   updateUserDetails (state) {
+    getUserDataFromLocalStorage(state)
     state.currentUser = JSON.parse(localStorage.getItem('UserData')) || [];
   }
 }
@@ -37,12 +33,12 @@ const actions = {
   logOut(context) {
     localStorage.removeItem('AccessToken');
     localStorage.removeItem('RefreshToken');
+    localStorage.removeItem('UserData')
     context.commit('updateUserDetails');
   },
   getUser(context, payload) {
-    console.log('user payload', payload)
       storeUserDataToLocalStorage(payload)
-      context.commit('updateUserDetails', payload)
+    context.commit('updateUserDetails', payload)
     }
 }
 

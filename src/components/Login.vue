@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import {http, baseURL} from "boot/axios";
+import { http } from "boot/axios";
 import {appendForm, configs } from "src/helpers/serviceConfigs";
 import validations from "src/helpers/validations";
 

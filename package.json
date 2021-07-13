@@ -16,11 +16,9 @@
   "dependencies": {
     "@quasar/extras": "^1.0.0",
     "axios": "^0.21.1",
-    "axios-oauth-client": "^1.4.3",
-    "axios-token-interceptor": "^0.2.0",
     "core-js": "^3.6.5",
-    "qs": "^6.10.1",
-    "quasar": "^1.0.0"
+    "quasar": "^1.0.0",
+    "vue-form-wizard": "^0.8.4"
   },
   "devDependencies": {
     "@quasar/app": "^2.0.0",
