@@ -98,7 +98,6 @@
 import {FormWizard, TabContent} from 'vue-form-wizard'
 import 'vue-form-wizard/dist/vue-form-wizard.min.css'
 import mixins from '../mixins/mixins'
-import { http } from "boot/axios";
 const {phone} = require('phone')
 export default {
 name: "Surveyor",
@@ -110,15 +109,21 @@ name: "Surveyor",
   props: {
     'questions': {
       type: Array,
-      required: false
+      required: true
+    },
+    'currentUser': {
+      required: true
     }
   },
-  mounted() {
+    mounted() {
     this.removeMd()
   },
   data () {
   return {
     formData: {
+      ans: [],
+      survey_id: 1,
+      user: this.currentUser.id,
       first_name: '',
       last_name: '',
       contact: '',
@@ -127,7 +132,13 @@ name: "Surveyor",
       constituency: '',
       ward: '',
       education: '',
-      gender: ''
+      gender: '',
+      local_id: 7,
+      location: {
+        'accuracy': 0,
+        'lat': 0,
+        'lon': 0
+      }
     },
     countryOptions: ['Kenya'],
     countyOptions: ['Nairobi', 'Kisumu', 'Nakuru', 'Mombasa', 'Uasin Gishu','Kiambu', 'Meru', 'Vihiga'],
@@ -136,6 +147,9 @@ name: "Surveyor",
    }
   },
   computed: {
+    getStartTime() {
+      return this.$store.getters['question/startTime'];
+    },
     genderDescription() {
         return this.questions[8].text.slice(28, 40) + ' ' +  this.questions[8].text.slice(63, 69) + ' ' + this.questions[8].text.slice(76, 77)
     },
@@ -150,14 +164,17 @@ name: "Surveyor",
     }
   },
   methods: {
-    onComplete (){
+    submitForm () {
+      const today = new Date();
+      const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+      const finalFom = this.formData
+      finalFom.start_time = this.getStartTime
+      finalFom.end_time = time
+      this.$store.dispatch('question/saveData', finalFom)
 
     },
-    submitForm () {
-      console.log('form data', this.formData)
-      this.$store.dispatch('question/saveData', this.formData)
-      .then(response => console.log('firs', response))
-      .catch(error => console.log(error))
+    onComplete () {
+
     },
     isLastStep() {
       if (this.$refs.wizard) {

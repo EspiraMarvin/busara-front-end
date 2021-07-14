@@ -3,12 +3,14 @@ import {appendForm} from "src/helpers/serviceConfigs";
 
 const state = () => ({
   form: [],
-  questions: []
+  questions: [],
+  startTime: ''
 })
 
 const getters = ({
   form: (state) => state.form,
-  questions: (state) => state.questions
+  questions: (state) => state.questions,
+  startTime: (state) => state.startTime
 })
 
 const mutations = {
@@ -17,6 +19,9 @@ const mutations = {
   },
   updateQuestions(state, payload){
     state.questions = payload
+  },
+  updatedStartTime(state, payload) {
+    state.startTime = payload
   }
 }
 
@@ -24,8 +29,8 @@ const actions = {
   getQuestions(context){
     http.get('http://fullstack-role.busara.io/api/v1/questions')
       .then((response) => {
-        console.log(typeof response.data.results)
-        context.commit('updateQuestions', response.data.results)
+        console.log(typeof response.data)
+        context.commit('updateQuestions', response.data)
       }).catch(err => err)
 
   },
@@ -36,9 +41,14 @@ const actions = {
       }).catch(err => err)
   },
   saveData(context, form) {
+    console.log('form', form)
+    const ans = []
     http.post('http://fullstack-role.busara.io/api/v1/recruitment/answers/submit/', appendForm(form))
       .then((response) => console.log(response))
-      .catch(err => console.log(error))
+      .catch(err => console.log(err))
+  },
+  setStartTime(context, time) {
+    context.commit('updatedStartTime',time)
   }
 
 }
