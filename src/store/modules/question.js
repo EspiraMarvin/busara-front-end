@@ -36,7 +36,7 @@ const actions = {
       }).catch(err => err)
   },
   saveData(context, form) {
-    http.post('http://fullstack-role.busara.io/api/v1/recruitment/answers/submit', appendForm(form))
+    http.post('http://fullstack-role.busara.io/api/v1/recruitment/answers/submit/', appendForm(form))
       .then((response) => console.log(response))
       .catch(err => console.log(error))
   }

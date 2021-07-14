@@ -155,7 +155,7 @@ name: "Surveyor",
     },
     submitForm () {
       console.log('form data', this.formData)
-      this.$store.dispatch('question'/'saveData', this.formData)
+      this.$store.dispatch('question/saveData', this.formData)
       .then(response => console.log('firs', response))
       .catch(error => console.log(error))
     },
