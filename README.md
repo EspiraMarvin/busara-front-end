@@ -1,15 +1,19 @@
 # Quasar App (busara front-end)
 
-Implemented with Vue js Quasar
+###Implemented with Vue js Quasar
+
+###Link Provide Below
+
+##[Busara Survey App](https://busara-front-end.vercel.app)
 
 ## Install the dependencies
 ```bash
-yarn
+yarn / yarn install
 ```
 
 ### Start the app in development mode (hot-code reloading, error reporting, etc.)
 ```bash
-quasar dev
+quasar dev / yarn dev
 ```
 
 ### Lint the files
@@ -19,7 +23,7 @@ yarn run lint
 
 ### Build the app for production
 ```bash
-quasar build
+quasar build / yarn build
 ```
 
 ### Customize the configuration
