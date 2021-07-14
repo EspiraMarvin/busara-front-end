@@ -27,7 +27,7 @@
               v-model="formData.contact"
               label="Phone Number (e.g. +25471234567)"
               class="q-my-md"
-              :rules="[ val => val && val.length > 0 || questions[2].error_message, phoneValid(formData.contact)]"
+              :rules="[ val => val && val.length > 0 || 'Enter Phone number', phoneValid]"
             />
         </q-form>
       </TabContent>
@@ -160,7 +160,7 @@ name: "Surveyor",
       return !this.formData.first_name.replace(/\s/g, '').length
         || !this.formData.last_name.replace(/\s/g, '').length
         || !this.formData.contact.replace(/\s/g, '').length
-        || console.log(phone(this.formData.contact, {country: 'KE'}).isValid === false)
+        || phone(this.formData.contact, {country: 'KE'}).isValid === false
     }
   },
   methods: {
@@ -171,7 +171,13 @@ name: "Surveyor",
       finalFom.start_time = this.getStartTime
       finalFom.end_time = time
       this.$store.dispatch('question/saveData', finalFom)
-
+      this.$q.notify({
+        position: 'bottom',
+        color: 'blue-5',
+        textColor: 'white',
+        icon: 'check_circle',
+        message: `Survey ended at ${time}`,
+      });
     },
     onComplete () {
 
