@@ -166,7 +166,7 @@ name: "Surveyor",
   methods: {
     submitForm () {
       const today = new Date();
-      const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+      let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
       const finalFom = this.formData
       finalFom.start_time = this.getStartTime
       finalFom.end_time = time
@@ -177,7 +177,7 @@ name: "Surveyor",
         textColor: 'white',
         icon: 'check_circle',
         message: `Survey ended at ${time}`,
-      });
+      })
     },
     onComplete () {
 

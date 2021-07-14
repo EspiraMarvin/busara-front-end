@@ -29,8 +29,8 @@ const actions = {
   getQuestions(context){
     http.get('http://fullstack-role.busara.io/api/v1/questions')
       .then((response) => {
-        console.log(typeof response.data)
-        context.commit('updateQuestions', response.data)
+        console.log(typeof response.data.results)
+        context.commit('updateQuestions', response.data.results)
       }).catch(err => err)
 
   },
