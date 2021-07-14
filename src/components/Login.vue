@@ -62,9 +62,9 @@ name: "Login",
       http.post('https://fullstack-role.busara.io/api/v1/oauth/token/', appendForm(finalForm))
       .then((response) => {
         this.$store.dispatch('user/loginUser', response.data).then(() => {
-          this.formData= {}
           this.$router.push({ name: 'Home'})
           this.notify('Login Success', 'check_circle', 'blue-5')
+          this.formData= {}
         })
       }).catch(error => {
         if (error.response && error.response.status === 422) {
