@@ -37,7 +37,7 @@ const actions = {
     context.commit('updateUserDetails');
   },
   getUser(context) {
-    http.get('http://fullstack-role.busara.io/api/v1/users/current-user')
+    http.get('https://fullstack-role.busara.io/api/v1/users/current-user')
       .then((response) => {
         storeUserDataToLocalStorage(response.data)
         context.commit('updateUserDetails', response.data)

@@ -28,14 +28,14 @@ const mutations = {
 
 const actions = {
   getQuestions(context){
-    http.get('http://fullstack-role.busara.io/api/v1/questions')
+    http.get('https://fullstack-role.busara.io/api/v1/questions')
       .then((response) => {
         context.commit('updateQuestions', response.data.results)
       }).catch(err => err)
 
   },
   getForm(context) {
-    http.get('http://fullstack-role.busara.io/api/v1/recruitment/forms/?node_type=Both')
+    http.get('https://fullstack-role.busara.io/api/v1/recruitment/forms/?node_type=Both')
       .then((response) => {
         context.commit('updateForm', response.data)
       }).catch(err => err)
@@ -47,7 +47,7 @@ const actions = {
     // ]
     // const final = JSON.stringify(f)
     // console.log('final', f)
-    http.post('http://fullstack-role.busara.io/api/v1/recruitment/answers/submit/', JSON.stringify(form))
+    http.post('https://fullstack-role.busara.io/api/v1/recruitment/answers/submit/', JSON.stringify(form))
       .then((response) => {
         console.log(response)
         Notify.create({

@@ -2,8 +2,8 @@ import Vue from  'vue'
 import axios from 'axios'
 
   const tokenType = "bearer"
-  const baseURL = 'http://fullstack-role.busara.io/api/v1'
-  const refreshEndPoint = 'http://fullstack-role.busara.io/api/v1/oauth/token/'
+  const baseURL = 'https://fullstack-role.busara.io/api/v1'
+  const refreshEndPoint = 'https://fullstack-role.busara.io/api/v1/oauth/token/'
 
   let isAlreadyFetchingAccessToken = false
   let subscribers = []

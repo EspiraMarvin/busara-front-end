@@ -59,7 +59,7 @@ name: "Login",
       finalForm.grant_type = configs.grant_type
       finalForm.client_id = configs.my_client_id
       finalForm.client_secret = configs.my_client_secret
-      http.post('http://fullstack-role.busara.io/api/v1/oauth/token/', appendForm(finalForm))
+      http.post('https://fullstack-role.busara.io/api/v1/oauth/token/', appendForm(finalForm))
       .then((response) => {
         this.$store.dispatch('user/loginUser', response.data).then(() => {
           this.formData= {}
