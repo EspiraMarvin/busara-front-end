@@ -5,10 +5,10 @@
         <q-toolbar-title class="q-ml-md">
           Surveyor App
         </q-toolbar-title>
-        <q-btn-dropdown v-if="$store.getters['user/isAuthenticated']" stretch flat>
+        <q-btn-dropdown stretch flat>
           <template #label>
-            <p class="q-mx-md gt-sm" style="margin-bottom: -1px">{{ currentUser.name }}</p>
-            <q-avatar color="white" text-color="primary">{{ currentUser.name | abbreviate}}</q-avatar>
+            <p class="q-mx-md" style="margin-bottom: -1px">{{ user.name }}</p>
+            <q-avatar color="white" text-color="primary">{{ user.name.charAt(0).toLowerCase() }}</q-avatar>
           </template>
           <q-list>
             <q-item clickable tabindex="0" @click="logout">
@@ -32,12 +32,22 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import {http, storeUserDataToLocalStorage} from "boot/axios";
 export default {
   name: 'MainLayout',
   data () {
     return {
       user: []
     }
+  },
+  created() {
+    http.get('http://fullstack-role.busara.io/api/v1/users/current-user')
+      .then((response) => {
+        // storeUserDataToLocalStorage(response.data)
+        this.user = response.data
+        // return response.data
+        // context.commit('updateUserDetails', response.data)
+      }).catch(error => error)
   },
   computed: {
     ...mapGetters('user', ['currentUser'])

@@ -19,13 +19,13 @@ const ifAuthenticated = (_to, _from, next) => {
 
 const routes = [
   {
-    path: '/',
+    path: '/home',
     component: () => import('layouts/MainLayout.vue'),
     beforeEnter: ifAuthenticated,
     children: [
       {
-        path: '/home',
         name: 'Home',
+        path: '/home',
         component: () => import('pages/Index.vue') }
     ]
   },

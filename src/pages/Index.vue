@@ -1,12 +1,12 @@
 <template>
   <q-page class="q-px-lg q-py-xl">
-    Welcome {{ currentUser.name | capitalize }} to surveyor. Help us carry out the survey below.
+    Welcome {{ currentUser.name.toUpperCase() }} to surveyor. Help us carry out the survey below.
     <br>
     Click &nbsp;
     <q-btn label="Here" color="primary" @click="openSurvey" />
     &nbsp; to open and start the survey
-      <q-card class="q-mt-md" v-if="disable">
-        <Surveyor :questions="questions" />
+      <q-card class="q-mt-md">
+        <Surveyor class="block" :questions="questions" />
       </q-card>
   </q-page>
 </template>
@@ -32,30 +32,12 @@ export default {
       return this.$store.getters['question/questions']
     }
   },
-  mounted() {
-    this.getCurrentUser()
-    this.getSurveyForm()
-    this.getSurveyQuestions()
+  created() {
+    this.$store.dispatch('user/getUser')
+    this.$store.dispatch('question/getQuestions')
+    this.$store.dispatch('question/getForm')
   },
   methods: {
-    getCurrentUser() {
-      http.get('http://fullstack-role.busara.io/api/v1/users/current-user')
-      .then((response) => {
-        this.$store.dispatch('user/getUser', response.data)
-      }).catch(error => error)
-    },
-    getSurveyQuestions () {
-      http.get('http://fullstack-role.busara.io/api/v1/questions')
-      .then((response) => {
-        this.$store.dispatch('question/getQuestions', response.data)
-      }).catch(err => err)
-    },
-    getSurveyForm () {
-      http.get('http://fullstack-role.busara.io/api/v1/recruitment/forms/?node_type=Both')
-      .then((response) => {
-        this.$store.dispatch('question/getForm', response.data)
-      }).catch(err => err)
-    },
     openSurvey() {
       this.disable = !this.disable
     }

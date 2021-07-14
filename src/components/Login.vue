@@ -52,6 +52,9 @@ name: "Login",
       validateErrors: [],
     }
   },
+  mounted() {
+    console.log('Login user runs before which component')
+  },
   methods: {
     submitForm () {
       const finalForm = this.formData
