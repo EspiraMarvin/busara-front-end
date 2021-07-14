@@ -7,6 +7,15 @@ const mixins = {
     },
     phoneValid(val) {
       return phone(val, {country: 'KE'}).isValid || 'Invalid Phone Number'
+    },
+    notify (message, icon, color){
+      this.$q.notify({
+        message: message,
+        icon: icon,
+        color: color,
+        position: 'bottom',
+        textColor: 'white',
+      })
     }
   }
 

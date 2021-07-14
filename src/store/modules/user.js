@@ -37,7 +37,6 @@ const actions = {
     context.commit('updateUserDetails');
   },
   getUser(context) {
-    console.log('get user runs before which component')
     http.get('http://fullstack-role.busara.io/api/v1/users/current-user')
       .then((response) => {
         storeUserDataToLocalStorage(response.data)

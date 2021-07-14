@@ -1,6 +1,6 @@
 <template>
   <q-card flat class="q-px-md">
-    <FormWizard @on-complete="onComplete" ref="wizard" color="#e67e22">
+    <FormWizard ref="wizard" color="#e67e22">
       <p class="text-weight-bold" style="font-size: 18px" slot="title">Complete this Survey</p>
       <TabContent
         title="Personal details" icon="eva-person-outline" class="q-my-xl full-width">
@@ -8,7 +8,7 @@
             <q-input
               filled
               type="text"
-              v-model="formData.first_name"
+              v-model="formData.ans[0].q_ans"
               label="First Name"
               class="q-my-md"
               :rules="[ val => val && val.length > 0 || questions[0].error_message, hasWhiteSpacesOnly]"
@@ -16,7 +16,7 @@
             <q-input
               filled
               type="text"
-              v-model="formData.last_name"
+              v-model="formData.ans[1].q_ans"
               label="Last Name"
               class="q-my-md"
               :rules="[ val => val && val.length > 0 || questions[1].error_message, hasWhiteSpacesOnly]"
@@ -24,58 +24,58 @@
             <q-input
               filled
               type="number"
-              v-model="formData.contact"
+              v-model="formData.ans[2].q_ans"
               label="Phone Number (e.g. +25471234567)"
               class="q-my-md"
-              :rules="[ val => val && val.length > 0 || 'Enter Phone number', phoneValid]"
+              :rules="[ val => val && val.length > 0 || questions[2].error_message , phoneValid]"
             />
         </q-form>
       </TabContent>
-      <TabContent title="Location Info" icon="ti-settings" class="q-my-xl">
+      <TabContent title="Location Info" icon="ti-settings" class="q-my-xl" :before-change="beforeTabSwitch">
         <q-form>
           <q-select
             filled
-            v-model="formData.country"
+            v-model="formData.ans[3].q_ans"
             :options="countryOptions"
             label="Select country"
             class="q-my-md" />
           <q-select
             filled
-            v-model="formData.county"
+            v-model="formData.ans[4].q_ans"
             :options="countyOptions"
             label="Select county"
             class="q-my-md" />
           <q-select
             filled
-            v-model="formData.constituency"
+            v-model="formData.ans[5].q_ans"
             :options="constituencyOptions"
             label="Select constituency"
             class="q-my-md" />
           <q-select
             filled
-            v-model="formData.ward"
+            v-model="formData.ans[6].q_ans"
             :options="wardOptions"
             label="Select ward"
             class="q-my-md" />
         </q-form>
       </TabContent>
-      <TabContent title="Last step" icon="ti-check" class="q-my-xl">
+      <TabContent title="Additional Info" icon="ti-check" class="q-my-xl">
         <q-form>
           <q-input
             filled
             type="text"
-            v-model="formData.education"
-            label="What is your highest level of education?"
+            v-model="formData.ans[7].q_ans"
+            :label="getHighestLevelofEducation"
             class="q-my-md"
             :rules="[ val => val && val.length > 0 || 'Enter highest level of education', hasWhiteSpacesOnly]"
           />
           <div class="q-gutter-sm">
             <p class="q-ml-sm">
-             What is your gender?
+             {{ genderDescription }}
               <br>
             </p>
-            <q-radio v-model="formData.gender" val="male" label="Male" />
-            <q-radio v-model="formData.gender" val="female" label="Female" />
+            <q-radio v-model="formData.ans[8].q_ans" val="male" label="Male" />
+            <q-radio v-model="formData.ans[8].q_ans" val="female" label="Female" />
           </div>
         </q-form>
       </TabContent>
@@ -98,6 +98,8 @@
 import {FormWizard, TabContent} from 'vue-form-wizard'
 import 'vue-form-wizard/dist/vue-form-wizard.min.css'
 import mixins from '../mixins/mixins'
+import moment from 'moment';
+
 const {phone} = require('phone')
 export default {
 name: "Surveyor",
@@ -116,28 +118,68 @@ name: "Surveyor",
     }
   },
     mounted() {
-    this.removeMd()
+  this.removeMd()
+      this.formData.start_time = this.getStartTime
   },
   data () {
   return {
     formData: {
-      ans: [],
-      survey_id: 1,
+      ans: [
+        {
+          "q_id": "1",
+          "q_ans": "",
+          "column_match": "first_name"
+        },
+        {
+          "q_id": "2",
+          "q_ans": "",
+          "column_match": "last_name"
+        },
+        {
+          "q_id": "3",
+          "q_ans": "",
+          "column_match": "contact"
+        },
+        {
+          "q_id": "4",
+          "q_ans": "",
+          "column_match": "country"
+        },
+        {
+          "q_id": "5",
+          "q_ans": "",
+          "column_match": "county"
+        },
+        {
+          "q_id": "6",
+          "q_ans": "",
+          "column_match": "constituency"
+        },
+        {
+          "q_id": "7",
+          "q_ans": "",
+          "column_match": "ward"
+        },
+        {
+          "q_id": "8",
+          "q_ans": "",
+          "column_match": "education"
+        },
+        {
+          "q_id": "9",
+          "q_ans": "",
+          "column_match": "gender"
+        }
+      ],
+      survey_id: this.getFormId,
+      start_time: '',
+      end_time: '',
       user: this.currentUser.id,
-      first_name: '',
-      last_name: '',
-      contact: '',
-      country: '',
-      county: '',
-      constituency: '',
-      ward: '',
-      education: '',
-      gender: '',
       local_id: 7,
       location: {
         'accuracy': 0,
-        'lat': 0,
-        'lon': 0
+        'lat': 0.0,
+        'lon': 0.0
       }
     },
     countryOptions: ['Kenya'],
@@ -156,40 +198,56 @@ name: "Surveyor",
     getHighestLevelofEducation() {
       return this.questions[7].text.slice(28, 68)
     },
+    getFormId() {
+      const forms = this.$store.getters['question/form']
+      let formId;
+      for (const prop in forms){
+        if (prop === 'forms') {
+          formId = forms[prop][0].id
+        }
+      }
+      return formId
+    },
     isDisabled () {
-      return !this.formData.first_name.replace(/\s/g, '').length
-        || !this.formData.last_name.replace(/\s/g, '').length
-        || !this.formData.contact.replace(/\s/g, '').length
-        || phone(this.formData.contact, {country: 'KE'}).isValid === false
+      return !this.formData.ans[0].q_ans.replace(/\s/g, '').length
+        || !this.formData.ans[1].q_ans.replace(/\s/g, '').length
+        || !this.formData.ans[2].q_ans.replace(/\s/g, '').length
+        || phone(this.formData.ans[2].q_ans, {country: 'KE'}).isValid === false
+    },
+    isDisabledFinal () {
+      return !(!this.formData.ans[7].q_ans.replace(/\s/g, '').length
+        || !this.formData.ans[8].q_ans.replace(/\s/g, '').length);
     }
   },
   methods: {
-    submitForm () {
-      const today = new Date();
-      let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-      const finalFom = this.formData
-      finalFom.start_time = this.getStartTime
-      finalFom.end_time = time
-      this.$store.dispatch('question/saveData', finalFom)
-      this.$q.notify({
-        position: 'bottom',
-        color: 'blue-5',
-        textColor: 'white',
-        icon: 'check_circle',
-        message: `Survey ended at ${time}`,
-      })
+    beforeTabSwitch () {
+      if(!this.formData.ans[3].q_ans.replace(/\s/g, '').length
+        || !this.formData.ans[4].q_ans.replace(/\s/g, '').length
+        || !this.formData.ans[5].q_ans.replace(/\s/g, '').length
+        || !this.formData.ans[6].q_ans.replace(/\s/g, '').length
+      ) {
+        this.notify('Ensure to Select All Fields', 'warning', 'red-5')
+        return false
+      }
+      return true
     },
-    onComplete () {
-
+    submitForm () {
+      if (!this.formData.ans[7].q_ans.replace(/\s/g, '').length ||
+        !this.formData.ans[8].q_ans.replace(/\s/g, '').length) {
+        this.notify('All fields are required', 'warning','red-5')
+        return
+      }
+      this.formData.end_time = moment().format('YYYY-MM-DD HH:mm Z')
+      setTimeout(() => {
+        this.$store.dispatch('question/saveData', this.formData)
+        this.notify(`Survey ended at ${this.formData.end_time}`, 'check_circle', 'blue-5')
+      }, 1000)
     },
     isLastStep() {
       if (this.$refs.wizard) {
         return this.$refs.wizard.isLastStep
       }
       return false
-    },
-    submitSurvey() {
-      console.log()
     },
     removeMd() {
       let elems = document.querySelector(".md");

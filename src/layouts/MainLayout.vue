@@ -8,7 +8,7 @@
         <q-btn-dropdown stretch flat>
           <template #label>
             <p class="q-mx-md" style="margin-bottom: -1px">{{ user.name }}</p>
-            <q-avatar color="white" text-color="primary">{{ user.name.charAt(0).toLowerCase() }}</q-avatar>
+            <q-avatar color="white" text-color="primary">{{ user.name.charAt(0) | abbreviate}}</q-avatar>
           </template>
           <q-list>
             <q-item clickable tabindex="0" @click="logout">
@@ -31,29 +31,16 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import {http, storeUserDataToLocalStorage} from "boot/axios";
 export default {
   name: 'MainLayout',
   data () {
     return {
-      user: []
     }
   },
-  created() {
-    http.get('http://fullstack-role.busara.io/api/v1/users/current-user')
-      .then((response) => {
-        // storeUserDataToLocalStorage(response.data)
-        this.user = response.data
-        // return response.data
-        // context.commit('updateUserDetails', response.data)
-      }).catch(error => error)
-  },
   computed: {
-    ...mapGetters('user', ['currentUser'])
-    // currentUser() {
-    //   return this.$store.getters['user/currentUser'];
-    // }
+    user() {
+      return this.$store.getters['user/currentUser']
+    }
   },
   methods: {
     logout() {

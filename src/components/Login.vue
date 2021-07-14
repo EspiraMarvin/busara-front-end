@@ -37,10 +37,11 @@
 import { http } from "boot/axios";
 import {appendForm, configs } from "src/helpers/serviceConfigs";
 import validations from "src/helpers/validations";
-
+import mixins from "src/mixins/mixins";
 export default {
 name: "Login",
   props:[ 'tab' ],
+  mixins: [mixins],
   data () {
     return {
       formData: {
@@ -51,9 +52,6 @@ name: "Login",
       ...validations,
       validateErrors: [],
     }
-  },
-  mounted() {
-    console.log('Login user runs before which component')
   },
   methods: {
     submitForm () {
@@ -66,25 +64,13 @@ name: "Login",
         this.$store.dispatch('user/loginUser', response.data).then(() => {
           this.formData= {}
           this.$router.push({ name: 'Home'})
-          this.$q.notify({
-            position: 'bottom',
-            color: 'blue-5',
-            textColor: 'white',
-            icon: 'check_circle',
-            message: 'Login Success',
-          });
+          this.notify('Login Success', 'check_circle', 'blue-5')
         })
       }).catch(error => {
         if (error.response && error.response.status === 422) {
           this.validateErrors = error.response.data.errors;
         } else {
-          this.$q.notify({
-            position: 'bottom',
-            color: 'red-5',
-            textColor: 'white',
-            icon: 'warning',
-            message: 'An Error Occurred, try again',
-          });
+          this.notify('An Error Occurred, try again', 'warning', 'red-5')
         }
       })
     }}
