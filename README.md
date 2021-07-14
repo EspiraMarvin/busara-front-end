@@ -1,10 +1,10 @@
 # Quasar App (busara front-end)
 
-###Implemented with Vue js Quasar
+### Implemented with Vue js Quasar
 
-###Link Provide Below
+### Link Provide Below
 
-##[Busara Survey App](https://busara-front-end.vercel.app)
+## [Busara Survey App](https://busara-front-end.vercel.app)
 
 ## Install the dependencies
 ```bash
