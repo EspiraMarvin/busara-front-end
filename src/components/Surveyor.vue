@@ -120,6 +120,7 @@ name: "Surveyor",
     mounted() {
   this.removeMd()
       this.formData.start_time = this.getStartTime
+      this.formData.survey_id = this.getFormId
   },
   data () {
   return {
@@ -171,7 +172,7 @@ name: "Surveyor",
           "column_match": "gender"
         }
       ],
-      survey_id: this.getFormId,
+      survey_id: '',
       start_time: '',
       end_time: '',
       user: this.currentUser.id,

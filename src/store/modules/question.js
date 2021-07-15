@@ -41,32 +41,13 @@ const actions = {
       }).catch(err => err)
   },
   saveData(context, form) {
-    // console.log('save dara form', form)
-    // const f = [
-      // {"ans": form.ans},{"user": form.user},{"survey_id": form.survey_id},{"location": form.location},{local_id:form.local_id},{start_time:form.start_time},{end_time: form.end_time}
-    // ]
-    // const final = JSON.stringify(f)
-    // console.log('final', f)
-    http.post('https://fullstack-role.busara.io/api/v1/recruitment/answers/submit/', JSON.stringify(form))
+    let arr = []
+    arr.push(form)
+    http.post('https://fullstack-role.busara.io/api/v1/recruitment/answers/submit/', JSON.stringify(arr))
       .then((response) => {
         console.log(response)
-        Notify.create({
-          message: 'Survey Completed Successfully',
-          icon: 'check_circle',
-          color: 'blue-5',
-          position: 'bottom',
-          textColor: 'white'
-        })
       })
-      .catch(err => {
-        Notify.create({
-          message: `${err.message}-> Server Error`,
-          icon: 'warning',
-          color: 'red-5',
-          position: 'bottom',
-          textColor: 'white'
-        })
-      })
+      .catch(err => console.log(err))
   },
   setStartTime(context, time) {
     context.commit('updatedStartTime',time)
