@@ -45,9 +45,23 @@ const actions = {
     arr.push(form)
     http.post('https://fullstack-role.busara.io/api/v1/recruitment/answers/submit/', JSON.stringify(arr))
       .then((response) => {
+        Notify.create({
+          message: 'Success',
+          position: 'bottom',
+          icon: 'check_circle',
+          color: 'blue-5'
+        })
         console.log(response)
       })
-      .catch(err => console.log(err))
+      .catch(err => {
+        console.log(err)
+        Notify.create({
+          message: `${err}` ,
+          position: 'bottom',
+          icon: 'warning',
+          color: 'red-5'
+        })
+      })
   },
   setStartTime(context, time) {
     context.commit('updatedStartTime',time)
